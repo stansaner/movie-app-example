@@ -1,0 +1,109 @@
+/* VARIABLES */
+
+:root {
+    --blue: #24BBAB;
+    --orange: orange;
+    --gradient: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+}
+
+/* RESETS */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+/* GLOBAL CLASSES (Reusable classes) */
+
+.hide {
+    display: none;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.row, .column {
+    display: flex;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+
+/* CUSTOM STYLES */
+
+h1.main-header {   /* no space between h1 and main-header means all h1s _with_ main header */
+    margin: 20px 0 25px; /* top left-and-right bottom */
+    color: var(--blue);
+}
+
+input.search {
+    padding: 8px 15px;
+    width: 350px;
+    border-radius: 10px;
+    border: 1px solid var(--blue);
+    outline: none;
+    margin-bottom: 35px;
+    color: #555;
+}
+
+input.search::placeholder {  /* selector for pseudo-class uses 2 colons */
+    color: var(--blue);
+    text-align: center;
+}
+
+main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    padding: 0 3%;
+}
+
+main p.no-search {
+    grid-column: 1 / 5;
+    color: var(--blue);
+}
+
+main .movie-card {
+    padding: 15px 10px;
+    border: 3px solid var(--blue);
+    border-radius: 4px;
+    color: white;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+} /* the gradient is a trick for overlay with an opaque background */
+
+main .movie-card > *:not(last-child) { /* > is a difrect child selector, > * targets any direct children */
+    margin-bottom: 5px;
+} /* > *:not(last-child) targets every direct child of movie-card, except the last child */
+
+main .movie-card h3 {
+        font-size: 1rem;
+}
+
+main .movie-card p {
+    font-size: 0.9rem;
+}
+
+main .movie-card a {
+    color: var(--orange);
+    font-size: 0.8rem;
+    text-decoration: none;
+    border-bottom: 1px dashed var(--orange);
+}
