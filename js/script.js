@@ -4,81 +4,56 @@ var searchInput = document.querySelector('.search');
 var cardWrapper = document.querySelector('main');
 
 function noMatch() {
-    cardWrapper.innerHTML = '<p class="no-search">No matches found</p>';
+  cardWrapper.innerHTML = '<p class="no-search">No results found.</p>';
 }
 
 function displayMatches(matches) {
-    cardWrapper.innerHTML = '';
+  cardWrapper.innerHTML = '';
 
-    if (!matches.length) {
-        noMatch();
-    }
-
+  if (!matches) {
+    noMatch();
+  } else {
     for (var matchObj of matches) {
-        cardWrapper.insertAdjacentHTML('beforeend', `
-            <div class="movie-card" style="background-image: var(--gradient), 
-            url(${matchObj.movie_image});">
-                <h3>${matchObj.title}</h3>
-                <p>${matchObj.description}</p>
-                <a href="${matchObj.imdb_link}" target="_blank">View more info here</a>
-            </div>
-            `);
-                
+      cardWrapper.insertAdjacentHTML('beforeend', `
+      <div class="movie-card" style="background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+        url(${matchObj.Poster});">
+        <h3>${matchObj.Title}</h3>
+        <p>Release Year: ${matchObj.Year}</p>
+        <a href="https://www.imdb.com/title/${matchObj.imdbID}" target="_blank">View More Info Here</a>
+      </div>
+      `);
     }
+  }
+
 
 }
 
 function fetchMovies(event) {
-    var keyCode = event.keyCode;
-    // turn your strings to lowercase to avoid case mismatch
-    // and trim to remove leading and trailing spaces
-    var searchText = searchInput.value.toLowerCase().trim(); 
-    
-    if (keyCode === 13 && searchText) {
-        var matches = [];
+  var keyCode = event.keyCode;
+  var searchText = searchInput.value.toLowerCase().trim();
 
-        for (var movieObj of movieData) {
-            // for exact match
-            // if (movieObj.title.toLowerCase() === searchText) {
-            // for partial match use includes method
-            if (movieObj.title.toLowerCase().includes(searchText)) {
-                // pushing a matching object into the array matches
-                matches.push(movieObj);
-            }
-        }
-        searchInput.value = '';
-        displayMatches(matches);
+  if (keyCode === 13 && searchText) {
 
-     //   fetch('https://www.omdbiapi.com/?apikey=<yourkey>&t=jurassic park ').then(function (responseObj) {
-            
-     //        var dataPromise = responseObj.json();
-     //       console.log(responseObj);
-     //       console.log(data);
+    var responsePromise = fetch(`https://www.omdbapi.com/?apikey=6aea06d6&s=${searchText}`);
 
-     //       dataPromise.then(function(data) {
-
-     //       });
-     //   });
-        // fetch returns a "promise" object
+    function handleResponse(responseObj) {
+      return responseObj.json();
     }
-}
 
-/* First things that need to run right away */
+    responsePromise
+      .then(handleResponse)
+      .then(function (data) {
+        displayMatches(data.Search);
+        searchInput.value = '';
+      });
+
+
+  }
+}
 
 function init() {
-    searchInput.addEventListener('keydown', fetchMovies);
+  searchInput.addEventListener('keydown', fetchMovies);
 }
 
-
 init();
-
-
-
-
-/*
-        <div class="movie-card">
-            <h3>Movie Title</h3>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate numquam nostrum dolor veniam sed autem. Quibusdam voluptatibus totam quam commodi eos iste suscipit odit nemo maiores nesciunt. Quaerat, sequi placeat.</p>
-            <a href="#">View More Info Here</a>
-        </div>
-*/
